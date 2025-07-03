@@ -13,7 +13,7 @@ interface play {
   type: string;
 }
 
-function statement(invoice: invoice, plays: Record<string, play>) {
+export function statement(invoice: invoice, plays: Record<string, play>) {
   let totalAmount = 0;
   let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
