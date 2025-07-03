@@ -36,14 +36,14 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
   return result;
 
   function volumeCreditsFor(
-    perf: { audience: number; playID: string },
+    aPerfomance: { audience: number; playID: string },
   ) {
-    let volumeCredits = Math.max(perf.audience - 30, 0);
+    let result = Math.max(aPerfomance.audience - 30, 0);
     // add extra credit for every ten comedy attendees
-    if ("comedy" === playsFor(perf).type) {
-      volumeCredits += Math.floor(perf.audience / 5);
+    if ("comedy" === playsFor(aPerfomance).type) {
+      result += Math.floor(aPerfomance.audience / 5);
     }
-    return volumeCredits;
+    return result;
   }
 
   function playsFor(
