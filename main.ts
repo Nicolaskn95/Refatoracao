@@ -24,17 +24,16 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
   }).format;
 
   for (const perf of invoice.performances) {
-    const play = playsFor(perf); // change the switch to a function call
-    const thisAmount = amountFor(perf, play); // pass the play object instead of plays
+    const thisAmount = amountFor(perf, playsFor(perf)); // pass the play object instead of plays
 
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
     // add extra credit for every ten comedy attendees
-    if ("comedy" === play.type) {
+    if ("comedy" === playsFor(perf).type) {
       volumeCredits += Math.floor(perf.audience / 5);
     }
 
-    result += `  ${play.name}: ${
+    result += `  ${playsFor(perf).name}: ${
       format(thisAmount / 100)
     } (${perf.audience} seats)\n`;
     totalAmount += thisAmount;
