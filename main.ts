@@ -14,21 +14,34 @@ interface play {
 }
 
 export function statement(invoice: invoice, plays: Record<string, play>) {
-  let totalAmount = 0;
-  let volumeCredits = 0;
   let result = `Statement for ${invoice.customer}\n`;
 
   for (const perf of invoice.performances) {
-    volumeCredits += volumeCreditsFor(perf);
     result += `  ${playsFor(perf).name}: ${
       usd(amountFor(perf) / 100)
     } (${perf.audience} seats)\n`;
-    totalAmount += amountFor(perf);
   }
+  const totalAmount = appleSauce();
   result += `Amount owed is ${usd(totalAmount / 100)}\n`;
-  result += `You earned ${volumeCredits} credits\n`;
+  result += `You earned ${totalVolumeCredits()} credits\n`;
 
   return result;
+
+  function appleSauce() {
+    let totalAmount = 0;
+    for (const perf of invoice.performances) {
+      totalAmount += amountFor(perf);
+    }
+    return totalAmount;
+  }
+
+  function totalVolumeCredits() {
+    let volumeCredits = 0;
+    for (const perf of invoice.performances) {
+      volumeCredits += volumeCreditsFor(perf);
+    }
+    return volumeCredits;
+  }
 
   function volumeCreditsFor(
     aPerfomance: { audience: number; playID: string },
