@@ -24,7 +24,7 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
   }).format;
 
   for (const perf of invoice.performances) {
-    const thisAmount = amountFor(perf, playsFor(perf)); // pass the play object instead of plays
+    const thisAmount = amountFor(perf); // pass the play object instead of plays
 
     // add volume credits
     volumeCredits += Math.max(perf.audience - 30, 0);
@@ -51,7 +51,6 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
 
   function amountFor(
     aPerformance: { playID: string; audience: number },
-    play: any,
   ): number {
     let result = 0;
     switch (playsFor(aPerformance).type) {
