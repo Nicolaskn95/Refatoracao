@@ -24,24 +24,27 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
   }).format;
 
   for (const perf of invoice.performances) {
-    const thisAmount = amountFor(perf); // pass the play object instead of plays
-
-    // add volume credits
-    volumeCredits += Math.max(perf.audience - 30, 0);
-    // add extra credit for every ten comedy attendees
-    if ("comedy" === playsFor(perf).type) {
-      volumeCredits += Math.floor(perf.audience / 5);
-    }
-
+    volumeCredits += volumeCreditsFor(perf);
     result += `  ${playsFor(perf).name}: ${
-      format(thisAmount / 100)
+      format(amountFor(perf) / 100)
     } (${perf.audience} seats)\n`;
-    totalAmount += thisAmount;
+    totalAmount += amountFor(perf);
   }
   result += `Amount owed is ${format(totalAmount / 100)}\n`;
   result += `You earned ${volumeCredits} credits\n`;
 
   return result;
+
+  function volumeCreditsFor(
+    perf: { audience: number; playID: string },
+  ) {
+    let volumeCredits = Math.max(perf.audience - 30, 0);
+    // add extra credit for every ten comedy attendees
+    if ("comedy" === playsFor(perf).type) {
+      volumeCredits += Math.floor(perf.audience / 5);
+    }
+    return volumeCredits;
+  }
 
   function playsFor(
     aPerfomance: { playID: string },
