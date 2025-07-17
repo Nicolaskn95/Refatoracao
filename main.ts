@@ -13,27 +13,39 @@ interface play {
   type: string;
 }
 
-export function statement(invoices: invoice, plays: Record<string, play>) {
-  return renderPlainText(invoices, plays);
+interface IStatementData {
+  customer: string;
+  performances: Array<{
+    playID: string;
+    audience: number;
+  }>;
 }
 
-function renderPlainText(invoice: invoice, plays: Record<string, play>) {
-  
-  let result = `Statement for ${invoice.customer}\n`;
+export function statement(invoices: invoice, plays: Record<string, play>) {
+  const statementData: IStatementData = {
+    customer: invoices.customer,
+    performances: invoices.performances
+  };
+  return renderPlainText(statementData, plays);
+}
 
-  for (const perf of invoice.performances) {
+function renderPlainText(data: IStatementData, plays: Record<string, play>) {
+
+  let result = `Statement for ${data.customer}\n`;
+
+  for (const perf of data.performances) {
     result += `  ${playsFor(perf).name}: ${
       usd(amountFor(perf) / 100)
     } (${perf.audience} seats)\n`;
   }
-  result += `Amount owed is ${usd(totalAmount() /100)}\n`;
+  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
 
   return result;
 
   function totalAmount() {
     let result = 0;
-    for (const perf of invoice.performances) {
+    for (const perf of data.performances) {
       result += amountFor(perf);
     }
     return result;
@@ -41,7 +53,7 @@ function renderPlainText(invoice: invoice, plays: Record<string, play>) {
 
   function totalVolumeCredits() {
     let result = 0;
-    for (const perf of invoice.performances) {
+    for (const perf of data.performances) {
       result += volumeCreditsFor(perf);
     }
     return result;
