@@ -37,6 +37,7 @@ Ao longo deste projeto, serão explorados e aplicados diversos conceitos fundame
 -   **Deslocar instruções (*Slide Statements*) (252):**: *Adicionar o siginificado*
 -   **Dividir laço (*Split Loop*) (257):**: *Adicionar o siginificado*
 ### Como Acompanhar a Refatoração
+- **Separar em fases (Split Phase) (183)**: *Adicionar o siginificado*
 
 Para uma melhor compreensão do processo, **recomenda-se a análise do histórico de commits em ordem cronológica**. Cada commit está associado a uma técnica ou princípio de refatoração do livro, com mensagens claras que descrevem a transformação realizada.
 

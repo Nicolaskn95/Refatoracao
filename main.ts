@@ -13,7 +13,12 @@ interface play {
   type: string;
 }
 
-export function statement(invoice: invoice, plays: Record<string, play>) {
+export function statement(invoices: invoice, plays: Record<string, play>) {
+  return renderPlainText(invoices, plays);
+}
+
+function renderPlainText(invoice: invoice, plays: Record<string, play>) {
+  
   let result = `Statement for ${invoice.customer}\n`;
 
   for (const perf of invoice.performances) {
@@ -21,13 +26,12 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
       usd(amountFor(perf) / 100)
     } (${perf.audience} seats)\n`;
   }
-  const totalAmount = appleSauce();
-  result += `Amount owed is ${usd(totalAmount/100)}\n`;
+  result += `Amount owed is ${usd(totalAmount() /100)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
-  
+
   return result;
 
-  function appleSauce() {
+  function totalAmount() {
     let result = 0;
     for (const perf of invoice.performances) {
       result += amountFor(perf);
@@ -36,11 +40,11 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
   }
 
   function totalVolumeCredits() {
-    let volumeCredits = 0;
+    let result = 0;
     for (const perf of invoice.performances) {
-      volumeCredits += volumeCreditsFor(perf);
+      result += volumeCreditsFor(perf);
     }
-    return volumeCredits;
+    return result;
   }
 
   function volumeCreditsFor(
