@@ -21,13 +21,13 @@ export function statement(invoice: invoice, plays: Record<string, play>) {
       usd(amountFor(perf) / 100)
     } (${perf.audience} seats)\n`;
   }
-
-  result += `Amount owed is ${usd(totalAmount() / 100)}\n`;
+  const totalAmount = appleSauce();
+  result += `Amount owed is ${usd(totalAmount/100)}\n`;
   result += `You earned ${totalVolumeCredits()} credits\n`;
-
+  
   return result;
 
-  function totalAmount() {
+  function appleSauce() {
     let result = 0;
     for (const perf of invoice.performances) {
       result += amountFor(perf);
