@@ -21,11 +21,19 @@ interface IStatementData {
   }>;
 }
 
+/**
+ * Generates a statement for the given invoice and plays.
+ * @param invoices - The invoice data containing customer and performances.
+ * @param plays - The plays data containing play details.
+ * @returns A formatted string representing the statement.
+ */
 export function statement(invoices: invoice, plays: Record<string, play>) {
+
   const statementData: IStatementData = {
     customer: invoices.customer,
-    performances: invoices.performances
+    performances: invoices.performances.map(enrichPerformance)
   };
+      
   return renderPlainText(statementData, plays);
 }
 
@@ -43,6 +51,13 @@ function renderPlainText(data: IStatementData, plays: Record<string, play>) {
 
   return result;
 
+    function enrichPerformance(aPerformance) {
+    const result = Object.assign({}, aPerformance);
+    result.play = playsFor(result);
+    return result;
+  }
+
+
   function totalAmount() {
     let result = 0;
     for (const perf of data.performances) {
@@ -50,6 +65,7 @@ function renderPlainText(data: IStatementData, plays: Record<string, play>) {
     }
     return result;
   }
+
 
   function totalVolumeCredits() {
     let result = 0;
@@ -79,9 +95,9 @@ function renderPlainText(data: IStatementData, plays: Record<string, play>) {
   }
 
   function playsFor(
-    aPerfomance: { playID: string },
+    aPerformance: { playID: string },
   ) {
-    return plays[aPerfomance.playID];
+    return plays[aPerformance.playID];
   }
 
   function amountFor(
