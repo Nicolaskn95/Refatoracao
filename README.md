@@ -45,7 +45,3 @@ Para uma melhor compreensão do processo, **recomenda-se a análise do históric
 
 -   **[TypeScript](https://www.typescriptlang.org/):** Um superset do JavaScript que adiciona tipagem estática opcional.
 -   **[Deno](https://deno.land/):** Um runtime seguro e moderno para JavaScript e TypeScript.
-
-## Como Contribuir
-
-Contribuições são muito bem-vindas! Se você tiver sugestões de melhorias, exemplos adicionais de refatoração ou correções, sinta-se à vontade para abrir uma **Issue** ou enviar um **Pull Request**.
